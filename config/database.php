@@ -94,6 +94,7 @@ class Database {
             $dbCandidates = array_values(array_unique($dbCandidates));
 
             $lastException = null;
+            $allErrors = [];
 
             // Step 1: Attempt connection across candidate host and database pairs
             foreach ($hosts as $h) {
@@ -104,17 +105,17 @@ class Database {
                         break 2;
                     } catch (PDOException $e) {
                         $lastException = $e;
+                        $allErrors[] = "[host: {$h}, db: {$d}] " . $e->getMessage();
                         // If error 1045 (invalid credentials), trying different database names won't help on this host
-                        if ($e->getCode() == 1045) {
+                        if (str_contains($e->getMessage(), '1045')) {
                             break;
                         }
                     }
                 }
             }
 
-            // Step 2: If still not connected and error was 1044 (access denied to db) or 0,
-            // connect without dbname and probe SHOW DATABASES to discover the exact assigned database
-            if (self::$instance === null && $lastException !== null && ($lastException->getCode() == 1044 || $lastException->getCode() == 0)) {
+            // Step 2: If still not connected, connect without dbname and probe SHOW DATABASES to discover the exact assigned database
+            if (self::$instance === null) {
                 foreach ($hosts as $h) {
                     try {
                         $dsn = "mysql:host={$h};port={$port};charset={$charset}";
@@ -137,16 +138,16 @@ class Database {
                             self::$instance = $probe;
                             break;
                         } else {
-                            $lastException = new PDOException("User '{$user}' authenticated on '{$h}', but has no databases assigned in Hostinger. Available databases: " . implode(', ', $available));
+                            $allErrors[] = "[host: {$h}] Connected, but SHOW DATABASES had no user databases. Found: " . implode(', ', $available);
                         }
                     } catch (PDOException $pe) {
-                        // ignore and try next host
+                        $allErrors[] = "[host: {$h} no-db] " . $pe->getMessage();
                     }
                 }
             }
 
             if (self::$instance === null) {
-                $errMsg = $lastException ? $lastException->getMessage() : 'Unknown database connection error';
+                $errMsg = !empty($allErrors) ? implode(" | ", $allErrors) : ($lastException ? $lastException->getMessage() : 'Unknown database error');
                 if (isset($_SERVER['HTTP_ACCEPT']) && str_contains($_SERVER['HTTP_ACCEPT'], 'application/json')) {
                     header('Content-Type: application/json; charset=utf-8');
                     http_response_code(500);
