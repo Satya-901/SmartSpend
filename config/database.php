@@ -36,8 +36,13 @@ function load_env($filePath) {
     }
 }
 
-// Load .env from project root
-load_env(__DIR__ . '/../.env');
+// Load .env first if it exists; if not, check for .env.live
+if (file_exists(__DIR__ . '/../.env')) {
+    load_env(__DIR__ . '/../.env');
+}
+if (file_exists(__DIR__ . '/../.env.live')) {
+    load_env(__DIR__ . '/../.env.live');
+}
 
 // Helper to get env variable with fallback
 function env($key, $default = null) {
@@ -54,14 +59,12 @@ class Database {
 
     public static function getConnection(): PDO {
         if (self::$instance === null) {
-            $host = env('DB_HOST', '127.0.0.1');
+            $host = env('DB_HOST', 'localhost');
             $port = env('DB_PORT', '3306');
             $db   = env('DB_NAME', 'expense_tracker_db');
             $user = env('DB_USER', 'root');
             $pass = env('DB_PASS', '');
             $charset = 'utf8mb4';
-
-            $dsn = "mysql:host={$host};port={$port};dbname={$db};charset={$charset}";
 
             $options = [
                 PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
@@ -69,21 +72,116 @@ class Database {
                 PDO::ATTR_EMULATE_PREPARES   => false,
             ];
 
-            try {
-                self::$instance = new PDO($dsn, $user, $pass, $options);
-            } catch (PDOException $e) {
-                // Return json if this is an API call
+            // Build candidate hosts (e.g. Hostinger grants user@localhost; PDO to 127.0.0.1 can fail with 1044/2002)
+            $hosts = [$host];
+            if ($host === '127.0.0.1') {
+                $hosts[] = 'localhost';
+            } elseif ($host === 'localhost') {
+                $hosts[] = '127.0.0.1';
+            }
+
+            // Build candidate database names in case of common typos (e.g. SmartSpends vs SmartSpend, casing)
+            $dbCandidates = [$db];
+            if (str_ends_with($db, 's')) {
+                $dbCandidates[] = substr($db, 0, -1);
+            } else {
+                $dbCandidates[] = $db . 's';
+            }
+            $dbCandidates[] = strtolower($db);
+            if (str_ends_with(strtolower($db), 's')) {
+                $dbCandidates[] = substr(strtolower($db), 0, -1);
+            }
+            $dbCandidates = array_values(array_unique($dbCandidates));
+
+            $lastException = null;
+
+            // Step 1: Attempt connection across candidate host and database pairs
+            foreach ($hosts as $h) {
+                foreach ($dbCandidates as $d) {
+                    try {
+                        $dsn = "mysql:host={$h};port={$port};dbname={$d};charset={$charset}";
+                        self::$instance = new PDO($dsn, $user, $pass, $options);
+                        break 2;
+                    } catch (PDOException $e) {
+                        $lastException = $e;
+                        // If error 1045 (invalid credentials), trying different database names won't help on this host
+                        if ($e->getCode() == 1045) {
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // Step 2: If still not connected and error was 1044 (access denied to db) or 0,
+            // connect without dbname and probe SHOW DATABASES to discover the exact assigned database
+            if (self::$instance === null && $lastException !== null && ($lastException->getCode() == 1044 || $lastException->getCode() == 0)) {
+                foreach ($hosts as $h) {
+                    try {
+                        $dsn = "mysql:host={$h};port={$port};charset={$charset}";
+                        $probe = new PDO($dsn, $user, $pass, $options);
+                        $stmt = $probe->query("SHOW DATABASES");
+                        $available = $stmt->fetchAll(PDO::FETCH_COLUMN);
+                        $userDbs = array_values(array_filter($available, function($name) {
+                            return !in_array(strtolower($name), ['information_schema', 'performance_schema', 'mysql', 'sys']);
+                        }));
+
+                        if (!empty($userDbs)) {
+                            $selectedDb = $userDbs[0];
+                            foreach ($userDbs as $udb) {
+                                if (stripos($udb, 'spend') !== false) {
+                                    $selectedDb = $udb;
+                                    break;
+                                }
+                            }
+                            $probe->exec("USE `{$selectedDb}`");
+                            self::$instance = $probe;
+                            break;
+                        } else {
+                            $lastException = new PDOException("User '{$user}' authenticated on '{$h}', but has no databases assigned in Hostinger. Available databases: " . implode(', ', $available));
+                        }
+                    } catch (PDOException $pe) {
+                        // ignore and try next host
+                    }
+                }
+            }
+
+            if (self::$instance === null) {
+                $errMsg = $lastException ? $lastException->getMessage() : 'Unknown database connection error';
                 if (isset($_SERVER['HTTP_ACCEPT']) && str_contains($_SERVER['HTTP_ACCEPT'], 'application/json')) {
                     header('Content-Type: application/json; charset=utf-8');
                     http_response_code(500);
-                    echo json_encode(['success' => false, 'message' => 'Database connection failed: ' . $e->getMessage()]);
+                    echo json_encode(['success' => false, 'message' => 'Database connection failed: ' . $errMsg]);
                     exit;
                 }
-                die("Database connection error: " . htmlspecialchars($e->getMessage()));
+                die("Database connection error: " . htmlspecialchars($errMsg));
             }
+
+            // Step 3: Auto-bootstrap tables from schema.sql if empty database
+            self::ensureTables(self::$instance);
         }
 
         return self::$instance;
+    }
+
+    private static function ensureTables(PDO $pdo): void {
+        try {
+            $stmt = $pdo->query("SHOW TABLES LIKE 'users'");
+            if ($stmt && $stmt->fetch()) {
+                return; // Tables already exist
+            }
+
+            // If users table does not exist, run schema.sql
+            $schemaFile = __DIR__ . '/../schema.sql';
+            if (file_exists($schemaFile)) {
+                $sql = file_get_contents($schemaFile);
+                // Remove CREATE DATABASE and USE statements
+                $sql = preg_replace('/CREATE\s+DATABASE[^;]+;/i', '', $sql);
+                $sql = preg_replace('/USE\s+[^;]+;/i', '', $sql);
+                $pdo->exec($sql);
+            }
+        } catch (Throwable $t) {
+            error_log("Schema auto-bootstrap notice: " . $t->getMessage());
+        }
     }
 }
 
