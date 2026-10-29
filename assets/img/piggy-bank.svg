@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 130" width="160" height="130">
+  <defs>
+    <filter id="softShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#F43F5E" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- Cute Cat Peeking Behind Piggy Bank -->
+  <g id="catMascot">
+    <!-- Cat Ears -->
+    <path d="M 96 42 L 104 20 L 115 35 Z" fill="#FDBA74"/>
+    <path d="M 100 38 L 105 25 L 112 34 Z" fill="#FDA4AF"/>
+    <path d="M 134 42 L 126 20 L 115 35 Z" fill="#FDBA74"/>
+    <path d="M 130 38 L 125 25 L 118 34 Z" fill="#FDA4AF"/>
+    <!-- Cat Head -->
+    <ellipse cx="115" cy="46" rx="22" ry="20" fill="#FED7AA"/>
+    <!-- Cat Cheeks -->
+    <circle cx="103" cy="51" r="3.5" fill="#FDA4AF" opacity="0.6"/>
+    <circle cx="127" cy="51" r="3.5" fill="#FDA4AF" opacity="0.6"/>
+    <!-- Cat Eyes -->
+    <ellipse cx="108" cy="44" rx="2.5" ry="3" fill="#292524"/>
+    <circle cx="109" cy="43" r="0.9" fill="#FFFFFF"/>
+    <ellipse cx="122" cy="44" rx="2.5" ry="3" fill="#292524"/>
+    <circle cx="123" cy="43" r="0.9" fill="#FFFFFF"/>
+    <!-- Cat Nose & Mouth -->
+    <polygon points="113,49 117,49 115,51" fill="#F43F5E"/>
+    <path d="M 112 52 Q 115 54 118 52" fill="none" stroke="#78350F" stroke-width="1.2" stroke-linecap="round"/>
+    <!-- Cat Paw on Piggy -->
+    <ellipse cx="94" cy="68" rx="7" ry="5" fill="#FED7AA" stroke="#FDBA74" stroke-width="1"/>
+  </g>
+
+  <!-- Piggy Bank -->
+  <g id="piggyBank" filter="url(#softShadow)">
+    <!-- Body -->
+    <ellipse cx="65" cy="80" rx="46" ry="36" fill="#FDE2E4"/>
+    <ellipse cx="65" cy="80" rx="44" ry="34" fill="#FCD5CE"/>
+    
+    <!-- Snout -->
+    <ellipse cx="23" cy="83" rx="14" ry="17" fill="#F8B4B4"/>
+    <ellipse cx="21" cy="79" rx="3" ry="3" fill="#E11D48"/>
+    <ellipse cx="21" cy="88" rx="3" ry="3" fill="#E11D48"/>
+    
+    <!-- Piggy Ears -->
+    <polygon points="46,55 58,35 68,52" fill="#F8B4B4"/>
+    <polygon points="50,53 58,40 65,51" fill="#F43F5E"/>
+    
+    <!-- Piggy Eye -->
+    <circle cx="43" cy="69" r="4" fill="#292524"/>
+    <circle cx="44.5" cy="67.5" r="1.4" fill="#FFFFFF"/>
+    <ellipse cx="48" cy="76" rx="4" ry="2.5" fill="#F43F5E" opacity="0.4"/>
+    
+    <!-- Coin Slot -->
+    <rect x="58" y="46" width="16" height="4" rx="2" fill="#BE123C"/>
+    
+    <!-- Dropping Gold Coin -->
+    <ellipse cx="66" cy="36" rx="9" ry="4" fill="#FBBF24" stroke="#D97706" stroke-width="1.5"/>
+    <circle cx="66" cy="36" r="2" fill="#D97706" opacity="0.6"/>
+    
+    <!-- Legs -->
+    <rect x="38" y="105" width="14" height="15" rx="5" fill="#F8B4B4"/>
+    <rect x="78" y="105" width="14" height="15" rx="5" fill="#F8B4B4"/>
+    
+    <!-- Curly Tail -->
+    <path d="M 107 76 Q 118 70 114 62 Q 109 54 117 52" fill="none" stroke="#F8B4B4" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+</svg>

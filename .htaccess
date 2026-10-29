@@ -1,0 +1,12 @@
+# Disable directory browsing
+Options -Indexes
+
+# Protect sensitive files
+<FilesMatch "^\.env|\.git|schema\.sql|package.*\.json|capacitor\.config\..*">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Character encoding
+AddDefaultCharset UTF-8
+

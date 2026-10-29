@@ -1,0 +1,42 @@
+{
+  "appId": "com.smartspend.expensetracker",
+  "appName": "SmartSpend",
+  "webDir": "www",
+  "server": {
+    "url": "https://orangered-sardine-855758.hostingersite.com",
+    "cleartext": false,
+    "allowNavigation": [
+      "orangered-sardine-855758.hostingersite.com",
+      "*.hostingersite.com",
+      "cdn.jsdelivr.net",
+      "cdnjs.cloudflare.com",
+      "fonts.googleapis.com",
+      "fonts.gstatic.com",
+      "code.jquery.com"
+    ]
+  },
+  "plugins": {
+    "CapacitorCookies": {
+      "enabled": true
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#FAF5EE"
+    },
+    "Keyboard": {
+      "resize": "body",
+      "style": "DARK",
+      "resizeOnFullScreen": true
+    },
+    "SplashScreen": {
+      "launchShowDuration": 1500,
+      "launchAutoHide": true,
+      "backgroundColor": "#FAF5EE",
+      "showSpinner": true,
+      "androidSpinnerStyle": "large",
+      "iosSpinnerStyle": "small",
+      "spinnerColor": "#FFA726"
+    }
+  }
+}
+

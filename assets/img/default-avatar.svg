@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <circle cx="50" cy="50" r="48" fill="#FFF3E8" stroke="#FFE2CC" stroke-width="2"/>
+  <!-- Ears -->
+  <path d="M 24 38 L 32 14 L 46 28 Z" fill="#FDBA74"/>
+  <path d="M 28 35 L 34 20 L 43 29 Z" fill="#FCA5A5"/>
+  <path d="M 76 38 L 68 14 L 54 28 Z" fill="#FDBA74"/>
+  <path d="M 72 35 L 66 20 L 57 29 Z" fill="#FCA5A5"/>
+  <!-- Head -->
+  <circle cx="50" cy="54" r="32" fill="#FED7AA"/>
+  <!-- Cheeks -->
+  <circle cx="34" cy="60" r="5" fill="#FDA4AF" opacity="0.6"/>
+  <circle cx="66" cy="60" r="5" fill="#FDA4AF" opacity="0.6"/>
+  <!-- Eyes -->
+  <ellipse cx="40" cy="50" rx="3.5" ry="4" fill="#292524"/>
+  <circle cx="41.2" cy="48.5" r="1.3" fill="#FFFFFF"/>
+  <ellipse cx="60" cy="50" rx="3.5" ry="4" fill="#292524"/>
+  <circle cx="61.2" cy="48.5" r="1.3" fill="#FFFFFF"/>
+  <!-- Nose -->
+  <path d="M 47 56 L 53 56 L 50 59 Z" fill="#F43F5E"/>
+  <!-- Mouth -->
+  <path d="M 46 60 Q 50 63 54 60" fill="none" stroke="#78350F" stroke-width="1.8" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,19 @@
+{
+  "name": "SmartSpend - Expense & Loan Tracker",
+  "short_name": "SmartSpend",
+  "description": "Smart personal expense, loan and EMI financial management app",
+  "start_url": "index.php",
+  "display": "standalone",
+  "background_color": "#FAF5EE",
+  "theme_color": "#FAF5EE",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "assets/img/default-avatar.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
+
