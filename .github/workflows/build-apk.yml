@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build Final Android Release APK & AAB
 
 on:
   push:
@@ -26,7 +26,7 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install Dependencies
+      - name: Install Node Dependencies
         run: |
           npm ci || npm install
 
@@ -34,16 +34,45 @@ jobs:
         run: |
           npx cap sync android
 
-      - name: Build Debug APK
+      - name: Build Release APK and Play Store AAB
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug --stacktrace
+          ./gradlew assembleRelease bundleRelease --stacktrace
 
-      - name: Upload APK Artifact
+      - name: Sign Final Release APK
+        run: |
+          mkdir -p final-builds
+          
+          # Generate signing keystore
+          keytool -genkey -v -keystore release.keystore -alias smartspend -keyalg RSA -keysize 2048 -validity 10000 -storepass smartspend123 -keypass smartspend123 -dname "CN=SmartSpend, OU=Finance, O=SmartSpend, L=Delhi, S=Delhi, C=IN"
+          
+          # Locate Android Build Tools (apksigner & zipalign)
+          BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | sort -V | tail -n 1)
+          echo "Using Build Tools from: $BUILD_TOOLS_DIR"
+          
+          # Align APK
+          $BUILD_TOOLS_DIR/zipalign -v -p 4 android/app/build/outputs/apk/release/app-release-unsigned.apk final-builds/app-release-aligned.apk
+          
+          # Sign APK with v1 + v2 + v3 schemes
+          $BUILD_TOOLS_DIR/apksigner sign --ks release.keystore --ks-pass pass:smartspend123 --ks-key-alias smartspend --key-pass pass:smartspend123 --out final-builds/SmartSpend-Final-Release.apk final-builds/app-release-aligned.apk
+          
+          # Verify signature
+          $BUILD_TOOLS_DIR/apksigner verify final-builds/SmartSpend-Final-Release.apk
+          
+          # Copy Play Store AAB bundle
+          cp android/app/build/outputs/bundle/release/app-release.aab final-builds/SmartSpend-PlayStore-Bundle.aab
+
+      - name: Upload Final Release APK (Direct Install)
         uses: actions/upload-artifact@v4
         with:
-          name: SmartSpend-App-Debug-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
-          retention-days: 14
+          name: SmartSpend-Final-Release-APK
+          path: final-builds/SmartSpend-Final-Release.apk
+          retention-days: 30
 
+      - name: Upload Play Store AAB Bundle (For Google Play Store)
+        uses: actions/upload-artifact@v4
+        with:
+          name: SmartSpend-PlayStore-AAB
+          path: final-builds/SmartSpend-PlayStore-Bundle.aab
+          retention-days: 30
