@@ -57,7 +57,7 @@ function format_relative_day(string $dateStr): string {
     } elseif ($dateStr === $yesterday) {
         return 'Yesterday';
     } else {
-        return date('d M Y', strtotime($dateStr));
+        return date('M d, Y', strtotime($dateStr));
     }
 }
 
