@@ -131,7 +131,7 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: clamp(16px, 2.8vh, 26px);
+    margin-bottom: clamp(24px, 4.2vh, 42px);
     text-decoration: none;
 }
 
@@ -170,6 +170,7 @@ body {
 
 .welcome-heading-group {
     max-width: 62%;
+    margin-top: clamp(6px, 1.2vh, 14px);
 }
 
 .welcome-title {
@@ -464,7 +465,11 @@ body {
     }
 
     .brand-row {
-        margin-bottom: 8px;
+        margin-bottom: 14px;
+    }
+
+    .welcome-heading-group {
+        margin-top: 4px;
     }
 
     .login-hero-bg {
