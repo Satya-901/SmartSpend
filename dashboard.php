@@ -61,21 +61,13 @@ $stmtRecent = $db->prepare("
 $stmtRecent->execute([$userId]);
 $dbTransactions = $stmtRecent->fetchAll();
 
-// If user has recorded transactions, use live DB data
 $hasTransactions = !empty($dbTransactions);
 
-if ($hasTransactions) {
-    $displayBalance = $calculatedBalance;
-    $trendAmount = abs($netMonthlyChange);
-    $trendPositive = $netMonthlyChange >= 0;
-    $trendPercent = ($monthlyIncome > 0) ? round(($trendAmount / $monthlyIncome) * 100, 1) : 12.4;
-} else {
-    // Elegant sample starting balance matching the reference mockup
-    $displayBalance = 258075.50;
-    $trendAmount = 32050.00;
-    $trendPositive = true;
-    $trendPercent = 12.4;
-}
+// Real dynamic balance & month-to-date trend
+$displayBalance = $calculatedBalance;
+$trendAmount = abs($netMonthlyChange);
+$trendPositive = ($netMonthlyChange >= 0);
+$trendPercent = ($monthlyIncome > 0) ? round(($trendAmount / $monthlyIncome) * 100, 1) : 0;
 
 // Category icon helper to match reference style
 function get_category_icon_style($categoryName, $txType) {
@@ -96,45 +88,6 @@ function get_category_icon_style($categoryName, $txType) {
         return ['icon' => 'fa-receipt', 'bg' => '#F1F5F9', 'color' => '#64748B'];
     }
 }
-
-// Sample transactions for zero-state demonstration matching mockup
-$mockTransactions = [
-    [
-        'title' => 'Grocery Store',
-        'time' => 'Today, 10:24 AM',
-        'amount' => 545.20,
-        'type' => 'expense',
-        'style' => ['icon' => 'fa-cart-shopping', 'bg' => '#FEE2E2', 'color' => '#EF4444']
-    ],
-    [
-        'title' => 'Salary',
-        'time' => 'Today, 09:00 AM',
-        'amount' => 120000.00,
-        'type' => 'income',
-        'style' => ['icon' => 'fa-briefcase', 'bg' => '#D1FAE5', 'color' => '#059669']
-    ],
-    [
-        'title' => 'Netflix',
-        'time' => 'Yesterday, 08:15 PM',
-        'amount' => 499.00,
-        'type' => 'expense',
-        'style' => ['icon' => 'fa-film', 'bg' => '#18181B', 'color' => '#EF4444']
-    ],
-    [
-        'title' => 'Coffee Shop',
-        'time' => 'Yesterday, 06:32 PM',
-        'amount' => 245.50,
-        'type' => 'expense',
-        'style' => ['icon' => 'fa-mug-saucer', 'bg' => '#FEF3C7', 'color' => '#D97706']
-    ],
-    [
-        'title' => 'Petrol',
-        'time' => '25 Jun, 11:20 AM',
-        'amount' => 1250.00,
-        'type' => 'expense',
-        'style' => ['icon' => 'fa-gas-pump', 'bg' => '#DBEAFE', 'color' => '#2563EB']
-    ]
-];
 
 require_once __DIR__ . '/includes/header.php';
 ?>
@@ -528,6 +481,52 @@ require_once __DIR__ . '/includes/header.php';
 .tx-amount-text.income {
     color: #059669;
 }
+
+/* Empty State Container */
+.dash-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 34px 16px;
+    background: #FFFFFF;
+    border-radius: 20px;
+    border: 1.5px dashed #E2E8F0;
+    text-align: center;
+    margin-top: 4px;
+}
+
+.empty-icon-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #E8F8F0;
+    color: #059669;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.empty-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0F1F38;
+    margin-bottom: 4px;
+}
+
+.empty-desc {
+    font-size: 0.84rem;
+    color: #64748B;
+    margin-bottom: 14px;
+    max-width: 260px;
+}
+
+.empty-actions-row {
+    display: flex;
+    gap: 10px;
+}
 </style>
 
 <div class="dash-page-container">
@@ -554,12 +553,21 @@ require_once __DIR__ . '/includes/header.php';
                     <i class="fa-regular fa-eye" id="toggleEyeIcon"></i>
                 </button>
             </div>
-            <div class="hero-trend-pill">
-                <span class="trend-arrow-circle">
-                    <i class="fa-solid fa-arrow-up"></i>
-                </span>
-                <span>+ <?= $currencySymbol ?> <?= number_format($trendAmount, 0) ?> (<?= $trendPercent ?>%) this month</span>
-            </div>
+            <?php if ($trendAmount > 0): ?>
+                <div class="hero-trend-pill" style="<?= $trendPositive ? '' : 'color: #FCD34D;' ?>">
+                    <span class="trend-arrow-circle" style="<?= $trendPositive ? '' : 'background: rgba(252, 211, 77, 0.25); color: #FCD34D;' ?>">
+                        <i class="fa-solid <?= $trendPositive ? 'fa-arrow-up' : 'fa-arrow-down' ?>"></i>
+                    </span>
+                    <span><?= ($trendPositive ? '+ ' : '- ') . $currencySymbol . ' ' . number_format($trendAmount, 0) ?> (<?= $trendPercent ?>%) this month</span>
+                </div>
+            <?php else: ?>
+                <div class="hero-trend-pill" style="color: rgba(255, 255, 255, 0.8);">
+                    <span class="trend-arrow-circle" style="background: rgba(255, 255, 255, 0.18); color: #FFFFFF;">
+                        <i class="fa-solid fa-minus"></i>
+                    </span>
+                    <span><?= $currencySymbol ?> 0.00 this month</span>
+                </div>
+            <?php endif; ?>
         </div>
 
         <!-- Mini Frosted Visa Card Mockup -->
@@ -648,27 +656,18 @@ require_once __DIR__ . '/includes/header.php';
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <!-- Mockup Sample Transactions for New Accounts -->
-                <?php foreach ($mockTransactions as $tx): ?>
-                    <?php 
-                        $isExpense = ($tx['type'] === 'expense');
-                        $amountFormatted = ($isExpense ? '- ' : '+ ') . $currencySymbol . ' ' . number_format($tx['amount'], 2);
-                    ?>
-                    <div class="tx-item-row">
-                        <div class="tx-left-block">
-                            <div class="tx-squircle-icon" style="background-color: <?= $tx['style']['bg'] ?>; color: <?= $tx['style']['color'] ?>;">
-                                <i class="fa-solid <?= $tx['style']['icon'] ?>"></i>
-                            </div>
-                            <div class="tx-meta-block">
-                                <span class="tx-name"><?= htmlspecialchars($tx['title']) ?></span>
-                                <span class="tx-timestamp"><?= htmlspecialchars($tx['time']) ?></span>
-                            </div>
-                        </div>
-                        <div class="tx-amount-text <?= $isExpense ? 'expense' : 'income' ?>">
-                            <?= $amountFormatted ?>
-                        </div>
+                <div class="dash-empty-state">
+                    <div class="empty-icon-circle">
+                        <i class="fa-solid fa-receipt"></i>
                     </div>
-                <?php endforeach; ?>
+                    <h5 class="empty-title">No transactions yet</h5>
+                    <p class="empty-desc">Your recorded expenses and income will appear here.</p>
+                    <div class="empty-actions-row">
+                        <button type="button" class="btn btn-sm btn-primary-smart rounded-pill px-3 py-2 fw-bold" id="emptyBtnSend">
+                            <i class="fa-solid fa-plus me-1"></i> Add Transaction
+                        </button>
+                    </div>
+                </div>
             <?php endif; ?>
         </div>
     </div>
@@ -706,19 +705,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 2. Action: Send (Open Quick Add Modal for Expense)
     const btnSend = document.getElementById('btnActionSend');
+    const emptyBtnSend = document.getElementById('emptyBtnSend');
+
+    function openExpenseModal() {
+        const expenseTabBtn = document.getElementById('expense-tab');
+        if (expenseTabBtn) {
+            const tab = new bootstrap.Tab(expenseTabBtn);
+            tab.show();
+        }
+        const modalEl = document.getElementById('quickAddModal');
+        if (modalEl) {
+            const modal = new bootstrap.Modal(modalEl);
+            modal.show();
+        }
+    }
+
     if (btnSend) {
-        btnSend.addEventListener('click', function() {
-            const expenseTabBtn = document.getElementById('expense-tab');
-            if (expenseTabBtn) {
-                const tab = new bootstrap.Tab(expenseTabBtn);
-                tab.show();
-            }
-            const modalEl = document.getElementById('quickAddModal');
-            if (modalEl) {
-                const modal = new bootstrap.Modal(modalEl);
-                modal.show();
-            }
-        });
+        btnSend.addEventListener('click', openExpenseModal);
+    }
+    if (emptyBtnSend) {
+        emptyBtnSend.addEventListener('click', openExpenseModal);
     }
 
     // 3. Action: Receive (Open Quick Add Modal for Income)
