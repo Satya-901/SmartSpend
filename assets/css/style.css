@@ -3,7 +3,35 @@
    Warm Cream Pastel Palette · Desktop Sidebar + Mobile Bottom Nav
    ======================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+/* ========================================================
+   Local Offline Font: Redaction
+   ======================================================== */
+@font-face {
+    font-family: 'Redaction';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/Redaction-Regular.woff2') format('woff2'),
+         url('../fonts/Redaction-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Redaction';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('../fonts/Redaction-Bold.woff2') format('woff2'),
+         url('../fonts/Redaction-Bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Redaction';
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/Redaction-Italic.woff2') format('woff2'),
+         url('../fonts/Redaction-Italic.ttf') format('truetype');
+}
 
 :root {
     /* Warm Cream & Pastel Color Scheme */
@@ -87,7 +115,7 @@ html {
 }
 
 body {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Redaction', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, serif;
     background-color: var(--bg-page);
     color: var(--text-primary);
     min-height: 100vh;
@@ -96,6 +124,10 @@ body {
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
     touch-action: manipulation;
+}
+
+button, input, select, textarea, .btn, .form-control, .form-select, h1, h2, h3, h4, h5, h6 {
+    font-family: 'Redaction', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, serif;
 }
 
 /* Custom Sleek Scrollbars */

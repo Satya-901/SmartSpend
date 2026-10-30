@@ -51,7 +51,19 @@ $emis = $stmtEmi->fetchAll();
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; background: #fff; padding: 30px; }
+        @font-face {
+            font-family: 'Redaction';
+            font-style: normal;
+            font-weight: 400;
+            src: url('../assets/fonts/Redaction-Regular.woff2') format('woff2');
+        }
+        @font-face {
+            font-family: 'Redaction';
+            font-style: normal;
+            font-weight: 700;
+            src: url('../assets/fonts/Redaction-Bold.woff2') format('woff2');
+        }
+        body { font-family: 'Redaction', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; background: #fff; padding: 30px; }
         .statement-card { border: 1px solid #e0e0e0; border-radius: 12px; padding: 20px; margin-bottom: 25px; }
         .table th { background: #f8f9fa; font-size: 0.85rem; text-transform: uppercase; }
         @media print {

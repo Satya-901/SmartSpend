@@ -14,11 +14,14 @@ if (is_logged_in()) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>SmartSpend - Take Control of Your Finances</title>
-    <meta name="description" content="Spend smart, save more, reach your goals with SmartSpend personal finance tracker.">
+    <meta name="description"
+        content="Spend smart, save more, reach your goals with SmartSpend personal finance tracker.">
 
     <!-- PWA & Mobile WebApp Capabilities -->
     <link rel="manifest" href="manifest.json">
@@ -27,29 +30,55 @@ if (is_logged_in()) {
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="SmartSpend">
 
-    <!-- Google Fonts: Plus Jakarta Sans -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
     <!-- Bootstrap 5.3.3 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 
     <style>
+        /* Local Offline Font: Redaction */
+        @font-face {
+            font-family: 'Redaction';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url('assets/fonts/Redaction-Regular.woff2') format('woff2'),
+                 url('assets/fonts/Redaction-Regular.ttf') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'Redaction';
+            font-style: normal;
+            font-weight: 700;
+            font-display: swap;
+            src: url('assets/fonts/Redaction-Bold.woff2') format('woff2'),
+                 url('assets/fonts/Redaction-Bold.ttf') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'Redaction';
+            font-style: italic;
+            font-weight: 400;
+            font-display: swap;
+            src: url('assets/fonts/Redaction-Italic.woff2') format('woff2'),
+                 url('assets/fonts/Redaction-Italic.ttf') format('truetype');
+        }
+
         /* Base resets & Strict 100VH / 100DVH constraints to eliminate scrolling */
-        *, *::before, *::after {
+        *,
+        *::before,
+        *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
-        html, body {
+        html,
+        body {
             height: 100%;
             height: 100dvh;
             max-height: 100dvh;
             overflow: hidden;
             background-color: #FAF5EE;
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Redaction', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             text-rendering: optimizeLegibility;
@@ -70,7 +99,7 @@ if (is_logged_in()) {
             justify-content: space-between;
             overflow: hidden;
             background-color: #FAF5EE;
-            background-image: url('assets/img/hero-onboarding.jpg');
+            background-image: url('assets/img/hero-onboarding.png');
             background-size: cover;
             background-position: center bottom;
             background-repeat: no-repeat;
@@ -80,15 +109,13 @@ if (is_logged_in()) {
         .onboarding-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(
-                180deg,
-                rgba(255, 255, 255, 0.94) 0%,
-                rgba(255, 255, 255, 0.82) 22%,
-                rgba(255, 255, 255, 0.28) 42%,
-                rgba(255, 255, 255, 0.04) 62%,
-                rgba(255, 255, 255, 0.55) 86%,
-                rgba(255, 255, 255, 0.92) 100%
-            );
+            background: linear-gradient(180deg,
+                    rgba(255, 255, 255, 0.94) 0%,
+                    rgba(255, 255, 255, 0.82) 22%,
+                    rgba(255, 255, 255, 0.28) 42%,
+                    rgba(255, 255, 255, 0.04) 62%,
+                    rgba(255, 255, 255, 0.55) 86%,
+                    rgba(255, 255, 255, 0.92) 100%);
             pointer-events: none;
             z-index: 1;
         }
@@ -236,6 +263,7 @@ if (is_logged_in()) {
                 align-items: center;
                 justify-content: center;
             }
+
             .onboarding-screen {
                 height: 94vh;
                 max-height: 880px;
@@ -245,6 +273,7 @@ if (is_logged_in()) {
         }
     </style>
 </head>
+
 <body>
 
     <main class="onboarding-screen">
@@ -260,11 +289,13 @@ if (is_logged_in()) {
                         <path d="M7 23C7 15 13 7 23 6C23 14 18 23 7 23Z" fill="url(#leafGradientDark)" />
                         <path d="M17 25C17 18.5 21 12 28 11C28 17.5 24.5 25 17 25Z" fill="url(#leafGradientLight)" />
                         <defs>
-                            <linearGradient id="leafGradientDark" x1="7" y1="6" x2="23" y2="23" gradientUnits="userSpaceOnUse">
+                            <linearGradient id="leafGradientDark" x1="7" y1="6" x2="23" y2="23"
+                                gradientUnits="userSpaceOnUse">
                                 <stop stop-color="#059669" />
                                 <stop offset="1" stop-color="#047857" />
                             </linearGradient>
-                            <linearGradient id="leafGradientLight" x1="17" y1="11" x2="28" y2="25" gradientUnits="userSpaceOnUse">
+                            <linearGradient id="leafGradientLight" x1="17" y1="11" x2="28" y2="25"
+                                gradientUnits="userSpaceOnUse">
                                 <stop stop-color="#34D399" />
                                 <stop offset="1" stop-color="#10B981" />
                             </linearGradient>
@@ -287,7 +318,8 @@ if (is_logged_in()) {
             <div class="bottom-cta-block">
                 <a href="register.php" class="btn-get-started">
                     <span>Get Started</span>
-                    <svg class="btn-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="btn-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                         <polyline points="12 5 19 12 12 19"></polyline>
                     </svg>
@@ -302,4 +334,5 @@ if (is_logged_in()) {
     </main>
 
 </body>
+
 </html>

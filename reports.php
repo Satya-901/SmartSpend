@@ -279,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         grid: { display: false },
                         border: { display: false },
                         ticks: {
-                            font: { family: 'Plus Jakarta Sans', size: 11, weight: '700' },
+                            font: { family: 'Redaction', size: 11, weight: '700' },
                             color: '#9C9287'
                         }
                     }
