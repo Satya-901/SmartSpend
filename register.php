@@ -21,7 +21,7 @@ require_once __DIR__ . '/includes/header.php';
     <!-- Brand Header -->
     <div class="text-center mb-4">
         <div class="d-inline-flex align-items-center justify-content-center mb-3" style="width: 76px; height: 76px; border-radius: 24px; background: #FFF3E6; box-shadow: var(--shadow-card);">
-            <img src="assets/img/default-avatar.svg" width="56" height="56" alt="Logo">
+            <img src="assets/img/logo-symbol.png" width="52" height="52" alt="Logo" style="object-fit: contain;">
         </div>
         <h3 class="fw-bold mb-1" style="color: var(--text-primary); letter-spacing: -0.4px;">Join <?= APP_NAME ?></h3>
         <p class="text-muted small">Smart expense and loan management</p>

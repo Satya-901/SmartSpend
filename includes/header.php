@@ -44,6 +44,8 @@ $currentPage = basename($_SERVER['PHP_SELF']);
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="SmartSpend">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/logo/Favicons/favicon-180.png">
 
     <!-- Offline Font: Redaction is loaded locally from assets/fonts/ via style.css -->
 
@@ -77,7 +79,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             <!-- Brand -->
             <a href="dashboard.php" class="sidebar-brand">
                 <div class="sidebar-brand-icon">
-                    <img src="assets/img/default-avatar.svg" alt="Logo">
+                    <img src="assets/img/logo-symbol.png" alt="Logo" style="width: 30px; height: 30px; object-fit: contain;">
                 </div>
                 <div class="sidebar-brand-text">
                     <h4><?= APP_NAME ?></h4>

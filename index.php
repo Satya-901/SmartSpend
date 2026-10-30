@@ -29,6 +29,8 @@ if (is_logged_in()) {
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="SmartSpend">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/logo/Favicons/favicon-180.png">
 
     <!-- Bootstrap 5.3.3 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
@@ -283,24 +285,9 @@ if (is_logged_in()) {
         <div class="onboarding-content">
             <!-- Top Section: Brand & Headline -->
             <div class="top-section">
-                <!-- Brand Logo (Emerald Twin-Leaf SVG + Wordmark) -->
+                <!-- Brand Logo -->
                 <div class="brand-header">
-                    <svg class="brand-icon-leaf" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M7 23C7 15 13 7 23 6C23 14 18 23 7 23Z" fill="url(#leafGradientDark)" />
-                        <path d="M17 25C17 18.5 21 12 28 11C28 17.5 24.5 25 17 25Z" fill="url(#leafGradientLight)" />
-                        <defs>
-                            <linearGradient id="leafGradientDark" x1="7" y1="6" x2="23" y2="23"
-                                gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#059669" />
-                                <stop offset="1" stop-color="#047857" />
-                            </linearGradient>
-                            <linearGradient id="leafGradientLight" x1="17" y1="11" x2="28" y2="25"
-                                gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#34D399" />
-                                <stop offset="1" stop-color="#10B981" />
-                            </linearGradient>
-                        </defs>
-                    </svg>
+                    <img src="assets/img/logo-symbol.png" width="34" height="34" alt="Logo" style="object-fit: contain;">
                     <span class="brand-name">Smart<span class="brand-name-spend">Spend</span></span>
                 </div>
 
