@@ -30,20 +30,26 @@ require_once __DIR__ . '/includes/header.php';
     </button>
 </div>
 
-<div class="stat-pill-card h-100" style="background: #EDF7EE;">
-    <div class="stat-card-title" style="color: #1E7538;">Total Saved</div>
-    <div class="stat-amount" style="color: #1E7538;" id="summaryTotalSaved">
-        <span class="spinner-border spinner-border-sm"></span>
+<!-- Summary Row -->
+<div class="row g-2 mb-4">
+    <div class="col-6 col-md-6">
+        <div class="stat-pill-card h-100" style="background: #EDF7EE;">
+            <div class="stat-card-title" style="color: #1E7538;">Total Saved</div>
+            <div class="stat-amount" style="color: #1E7538;" id="summaryTotalSaved">
+                <span class="spinner-border spinner-border-sm"></span>
+            </div>
+            <div class="stat-period">Accumulated in active targets</div>
+        </div>
     </div>
-    <div class="stat-period">Accumulated in active targets</div>
-</div>
-<div class="col-6 col-md-6">
-    <div class="stat-pill-card h-100" style="background: #FFF8E1;">
-        <div class="stat-card-title text-warning-emphasis">Total Target</div>
+    <div class="col-6 col-md-6">
+        <div class="stat-pill-card h-100" style="background: #FFF8E1;">
+            <div class="stat-card-title text-warning-emphasis">Total Target</div>
+            <div class="stat-amount text-warning-emphasis" id="summaryTotalTarget">
+                <span class="spinner-border spinner-border-sm"></span>
+            </div>
+            <div class="stat-period">Sum of all goal targets</div>
+        </div>
     </div>
-    <div class="stat-period">Sum of all goal targets</div>
-</div>
-</div>
 </div>
 
 <div id="goalsListContainer">
@@ -159,11 +165,11 @@ require_once __DIR__ . '/includes/header.php';
         function loadGoals() {
             const container = $('#goalsListContainer');
             container.html(`
-            <div class="text-center py-5 text-muted">
-                <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
-                <span class="ms-2">Loading savings targets...</span>
-            </div>
-        `);
+                <div class="text-center py-5 text-muted">
+                    <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
+                    <span class="ms-2">Loading savings targets...</span>
+                </div>
+            `);
 
             $.getJSON('api/goals.php', { action: 'list' }, function (res) {
                 if (!res.success) {
@@ -174,15 +180,16 @@ require_once __DIR__ . '/includes/header.php';
                 $('#summaryTotalSaved').text(res.formatted_total_saved);
                 $('#summaryTotalTarget').text(res.formatted_total_target);
 
-                if (res.goals.length === 0) {
+                if (!res.goals || res.goals.length === 0) {
                     container.html(`
-                    <div class="empty-state-box">
-                        <div class="empty-state-icon" style="background: #EDF7EE; color: #1E7538;">
-                            <i class="fa-solid fa-bullseye"></i>
+                        <div class="empty-state-box">
+                            <div class="empty-state-icon" style="background: #EDF7EE; color: #1E7538;">
+                                <i class="fa-solid fa-bullseye"></i>
+                            </div>
+                            <h6>No savings goals created</h6>
+                            <p>Click "New Goal" to set a target and build your savings</p>
                         </div>
-                        <h6>No savings goals created</h6>
-                        <p>Click "New Goal" to set a target and build your savings</p>
-                    </div>
+                    `);
                     return;
                 }
 
@@ -190,30 +197,38 @@ require_once __DIR__ . '/includes/header.php';
                 for (const g of res.goals) {
                     const isAchieved = (g.status === 'achieved');
                     const badge = isAchieved
-                        ? `< span class= "badge badge-soft-success" > <i class="fa-solid fa-trophy me-1"></i> Achieved!</span > `
+                        ? '<span class="badge badge-soft-success"><i class="fa-solid fa-trophy me-1"></i> Achieved!</span>'
+                        : '<span class="badge badge-soft-warning"><i class="fa-regular fa-clock me-1"></i> In Progress</span>';
+
+                    html += `
+                    <div class="col-12 col-md-6 col-xl-4" id="goal-card-${g.id}">
+                        <div class="app-card h-100 d-flex flex-column justify-content-between p-3 border-0">
                             <div>
                                 <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <div class="category-icon-box" style="background-color: ${g.color}20; color: ${g.color}; width: 40px; height: 40px;">
-                                            <i class="fa-solid ${g.category_icon}"></i>
+                                    <div class="d-flex align-items-center gap-2 overflow-hidden" style="min-width: 0;">
+                                        <div class="category-icon-box" style="background-color: ${g.color}20; color: ${g.color}; width: 42px; height: 42px; border-radius: 14px; flex-shrink: 0;">
+                                            <i class="fa-solid ${g.category_icon || 'fa-bullseye'}"></i>
                                         </div>
-                                        <div>
-                                            <h6 class="fw-bold mb-0">${escapeHtml(g.title)}</h6>
+                                        <div class="text-truncate" style="min-width: 0;">
+                                            <h6 class="fw-bold mb-0 text-truncate">${escapeHtml(g.title)}</h6>
                                             <small class="text-muted">Target: ${g.formatted_target}</small>
                                         </div>
                                     </div>
-                                    <div>
+                                    <div class="flex-shrink-0 ms-2">
                                         ${badge}
                                     </div>
                                 </div>
 
-                                <!-- Progress Bar -->
-                                        <span class="text-muted fw-semibold">${g.percentage}% reached</span>
+                                <!-- Progress & Amounts -->
+                                <div class="my-3">
+                                    <div class="d-flex justify-content-between align-items-baseline mb-1">
+                                        <span class="fw-bold fs-5 text-dark">${g.formatted_current}</span>
+                                        <span class="text-muted fw-semibold small">${g.percentage}% reached</span>
                                     </div>
-                                    <div class="progress-smart" style="height: 10px;">
-                                        <div class="progress-bar" role="progressbar" style="width: ${g.percentage}%; background-color: ${g.color};"></div>
+                                    <div class="progress-smart" style="height: 10px; border-radius: 6px; background-color: #F0ECE4;">
+                                        <div class="progress-bar" role="progressbar" style="width: ${g.percentage}%; background-color: ${g.color}; border-radius: 6px;"></div>
                                     </div>
-                                    <div class="d-flex justify-content-between text-muted mt-2" style="font-size: 0.73rem;">
+                                    <div class="d-flex justify-content-between text-muted mt-2" style="font-size: 0.74rem;">
                                         <span>Remaining: <strong>${g.formatted_remaining}</strong></span>
                                         <span>Target: ${g.formatted_target_date}</span>
                                     </div>
@@ -221,18 +236,17 @@ require_once __DIR__ . '/includes/header.php';
                             </div>
 
                             <!-- Actions -->
-                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top" style="border-color: var(--border-soft) !important;">
+                            <div class="d-flex justify-content-between align-items-center pt-2 border-top" style="border-color: var(--border-soft) !important;">
                                 <button class="btn btn-outline-danger btn-sm rounded-pill px-2 delete-goal-btn" data-id="${g.id}" title="Delete Goal">
                                     <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                    <button class="btn btn-primary-smart btn-sm rounded-pill px-3 open-contrib-btn" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);" data-id="${g.id}" data-title="${escapeHtml(g.title)}" data-type="deposit">
-                                        <i class="fa-solid fa-plus me-1"></i> Deposit
-                                    </button>
-                                </div>
+                                </button>
+                                <button class="btn btn-primary-smart btn-sm rounded-pill px-3 open-contrib-btn" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);" data-id="${g.id}" data-title="${escapeHtml(g.title)}" data-type="deposit">
+                                    <i class="fa-solid fa-plus me-1"></i> Deposit
+                                </button>
                             </div>
                         </div>
                     </div>
-                `;
+                    `;
                 }
                 html += '</div>';
 
@@ -253,92 +267,101 @@ require_once __DIR__ . '/includes/header.php';
                 url: 'api/goals.php',
                 type: 'POST',
                 data: formData,
-                if(res.success) {
-                toastr.success(res.message);
-                $('#addGoalModal').modal('hide');
-                $('#goalForm')[0].reset();
-                loadGoals();
-            } else {
-                toastr.error(res.message);
-            }
-        },
-            complete: function () {
-                submitBtn.prop('disabled', false).html('<i class="fa-solid fa-plus me-1"></i> Start Saving');
-            }
+                processData: false,
+                contentType: false,
+                success: function (res) {
+                    if (res.success) {
+                        toastr.success(res.message);
+                        $('#addGoalModal').modal('hide');
+                        $('#goalForm')[0].reset();
+                        loadGoals();
+                    } else {
+                        toastr.error(res.message);
+                    }
+                },
+                error: function () {
+                    toastr.error('Something went wrong. Please try again.');
+                },
+                complete: function () {
+                    submitBtn.prop('disabled', false).html('<i class="fa-solid fa-plus me-1"></i> Start Saving');
+                }
             });
         });
 
-    // Open Contribute Modal
-    $(document).on('click', '.open-contrib-btn', function () {
-        const id = $(this).data('id');
-        const title = $(this).data('title');
-        const type = $(this).data('type');
+        // Open Contribute Modal
+        $(document).on('click', '.open-contrib-btn', function () {
+            const id = $(this).data('id');
+            const title = $(this).data('title');
+            const type = $(this).data('type');
 
-        $('#contribGoalId').val(id);
-        $('#contribType').val(type);
-        $('#contributeModalTitle').text((type === 'deposit' ? 'Add Funds to ' : 'Withdraw from ') + title);
-        $('#contributeModal').modal('show');
-    });
-
-    // Save Contribution
-    $('#contributeForm').on('submit', function (e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-        formData.append('action', 'contribute');
-
-        $.ajax({
-            url: 'api/goals.php',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (res) {
-                if (res.success) {
-                    toastr.success(res.message);
-                    $('#contributeModal').modal('hide');
-                    $('#contributeForm')[0].reset();
-                    loadGoals();
-                } else {
-                    toastr.error(res.message);
-                }
-            }
+            $('#contribGoalId').val(id);
+            $('#contribType').val(type);
+            $('#contributeModalTitle').text((type === 'deposit' ? 'Add Funds to ' : 'Withdraw from ') + title);
+            $('#contributeModal').modal('show');
         });
-    });
 
-    // Delete Goal
-    $(document).on('click', '.delete-goal-btn', function () {
-        const id = $(this).data('id');
-        confirmAction('Delete Goal?', 'Are you sure you want to remove this savings goal?').then(res => {
-            if (res.isConfirmed) {
-                $.post('api/goals.php', { action: 'delete', id: id }, function (resp) {
-                    if (resp.success) {
-                        toastr.success(resp.message);
-                        $(`#goal-card-${id}`).slideUp(300, function () { $(this).remove(); });
+        // Save Contribution
+        $('#contributeForm').on('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            formData.append('action', 'contribute');
+
+            $.ajax({
+                url: 'api/goals.php',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (res) {
+                    if (res.success) {
+                        toastr.success(res.message);
+                        $('#contributeModal').modal('hide');
+                        $('#contributeForm')[0].reset();
+                        loadGoals();
                     } else {
-                        toastr.error(resp.message);
+                        toastr.error(res.message);
                     }
-                });
-            }
+                },
+                error: function () {
+                    toastr.error('Something went wrong. Please try again.');
+                }
+            });
         });
-    });
 
-    function escapeHtml(text) {
-        if (!text) return '';
-        return String(text).replace(/[&<>"'`=\/]/g, function (s) {
-            return {
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                "'": '&#39;',
-                '/': '&#x2F;',
-                '`': '&#x60;',
-                '=': '&#x3D;'
-            }[s];
+        // Delete Goal
+        $(document).on('click', '.delete-goal-btn', function () {
+            const id = $(this).data('id');
+            confirmAction('Delete Goal?', 'Are you sure you want to remove this savings goal?').then(res => {
+                if (res.isConfirmed) {
+                    $.post('api/goals.php', { action: 'delete', id: id }, function (resp) {
+                        if (resp.success) {
+                            toastr.success(resp.message);
+                            $(`#goal-card-${id}`).slideUp(300, function () { $(this).remove(); });
+                        } else {
+                            toastr.error(resp.message);
+                        }
+                    });
+                }
+            });
         });
-    }
 
-    loadGoals();
+        function escapeHtml(text) {
+            if (!text) return '';
+            return String(text).replace(/[&<>"'`=\/]/g, function (s) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;',
+                    '/': '&#x2F;',
+                    '`': '&#x60;',
+                    '=': '&#x3D;'
+                }[s];
+            });
+        }
+
+        loadGoals();
     });
 </script>
 
