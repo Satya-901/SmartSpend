@@ -54,6 +54,8 @@ ehthumbs.db
 *~
 
 # Dynamic User Uploads (receipts, avatars)
-assets/uploads/*
-!assets/uploads/.gitkeep
+assets/uploads/avatars/*
+!assets/uploads/avatars/.gitkeep
+assets/uploads/receipts/*
+!assets/uploads/receipts/.gitkeep
 
