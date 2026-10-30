@@ -65,8 +65,8 @@
     --accent-amber-light: #FFF3E6;
     --accent-amber-glow: rgba(255, 167, 38, 0.4);
 
-    --nav-inactive: #9E948A;
-    --nav-active: #FFA726;
+    --nav-inactive: #94A3B8;
+    --nav-active: #059669;
 
     /* Radii & Shadows */
     --radius-sm: 12px;
@@ -877,17 +877,18 @@ button, input, select, textarea, .btn, .form-control, .form-select, h1, h2, h3, 
     color: var(--text-primary);
 }
 
-/* Floating Bottom Navigation Bar (Visible only on mobile screens < 992px) */
+/* Bottom Navigation Bar (Visible only on mobile screens < 992px) */
 .bottom-nav-container {
     position: fixed;
-    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    bottom: 0;
     left: 0;
     right: 0;
-    display: flex;
-    justify-content: center;
+    width: 100%;
     z-index: 1040;
-    pointer-events: none;
-    padding: 0 16px;
+    background: #FFFFFF;
+    border-top: 1px solid #F1F5F9;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.04);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 @media (min-width: 992px) {
@@ -898,26 +899,19 @@ button, input, select, textarea, .btn, .form-control, .form-select, h1, h2, h3, 
 
 .bottom-nav-bar {
     width: 100%;
-    max-width: 440px;
-    height: 66px;
-    background: rgba(255, 255, 255, 0.94);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 36px;
-    box-shadow: 0 12px 36px rgba(110, 75, 45, 0.12), 0 2px 8px rgba(110, 75, 45, 0.04);
-    border: 1px solid rgba(230, 220, 208, 0.85);
+    max-width: 500px;
+    margin: 0 auto;
+    height: 64px;
+    background: transparent;
     display: flex;
     align-items: center;
     justify-content: space-around;
-    padding: 0 8px;
-    pointer-events: auto;
-    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    padding: 0 12px;
 }
 
-[data-bs-theme="dark"] .bottom-nav-bar {
-    background: rgba(36, 32, 28, 0.94);
-    border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55);
+[data-bs-theme="dark"] .bottom-nav-container {
+    background: #1E1B18;
+    border-top-color: rgba(255, 255, 255, 0.08);
 }
 
 .nav-item-btn {
@@ -926,10 +920,10 @@ button, input, select, textarea, .btn, .form-control, .form-select, h1, h2, h3, 
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    color: var(--nav-inactive);
-    font-size: 0.68rem;
-    font-weight: 700;
-    gap: 3px;
+    color: #94A3B8;
+    font-size: 0.72rem;
+    font-weight: 600;
+    gap: 4px;
     flex: 1;
     height: 100%;
     transition: color 0.15s ease, transform 0.15s ease;
@@ -937,7 +931,7 @@ button, input, select, textarea, .btn, .form-control, .form-select, h1, h2, h3, 
 }
 
 .nav-item-btn i {
-    font-size: 1.15rem;
+    font-size: 1.25rem;
     transition: transform 0.15s ease;
 }
 
@@ -946,10 +940,12 @@ button, input, select, textarea, .btn, .form-control, .form-select, h1, h2, h3, 
 }
 
 .nav-item-btn.active {
-    color: var(--nav-active);
+    color: #059669 !important;
+    font-weight: 700;
 }
 
 .nav-item-btn.active i {
+    color: #059669 !important;
     transform: translateY(-1px);
 }
 
