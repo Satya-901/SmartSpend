@@ -1,7 +1,7 @@
 <?php
 /**
  * SmartSpend - Login Screen
- * Seamlessly Blended 100VH Zero-Scroll Layout matching Reference Design
+ * Perfectly Balanced 100VH Zero-Scroll Layout matching Reference Design
  */
 
 require_once __DIR__ . '/config/app.php';
@@ -55,7 +55,7 @@ body {
 .login-container {
     position: relative;
     width: 100%;
-    max-width: 480px;
+    max-width: 460px;
     height: 100%;
     height: 100dvh;
     max-height: 100dvh;
@@ -64,7 +64,7 @@ body {
     justify-content: space-between;
     overflow: hidden;
     box-sizing: border-box;
-    background: linear-gradient(135deg, #FFFFFF 0%, #F5FBF8 40%, #E2F6ED 78%, #CDF0DF 100%);
+    background: linear-gradient(135deg, #FFFFFF 0%, #F5FBF8 35%, #E2F6ED 75%, #CDF0DF 100%);
 }
 
 /* Desktop Polished Shell */
@@ -91,8 +91,8 @@ body {
     position: absolute;
     top: 0;
     right: 0;
-    width: clamp(210px, 58%, 290px);
-    height: clamp(260px, 38vh, 375px);
+    width: clamp(210px, 56%, 280px);
+    height: clamp(260px, 36vh, 360px);
     background-image: url('assets/img/login-bg-phone.png');
     background-repeat: no-repeat;
     background-position: top right;
@@ -115,28 +115,29 @@ body {
 }
 
 /* ========================================================
-   Top Content Section (Brand, Welcome Headings)
+   Top Content Section (Harmonious Proportions ~35-38% Height)
    ======================================================== */
 .login-top-section {
     position: relative;
     z-index: 2;
-    padding: calc(env(safe-area-inset-top, 0px) + 22px) 24px 10px 24px;
+    padding: calc(env(safe-area-inset-top, 0px) + 24px) 24px 16px 24px;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
     flex-shrink: 0;
 }
 
 .brand-row {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: clamp(10px, 1.8vh, 18px);
+    gap: 12px;
+    margin-bottom: clamp(16px, 2.8vh, 26px);
     text-decoration: none;
 }
 
 .brand-logo-img {
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
     object-fit: contain;
     flex-shrink: 0;
     border-radius: 10px;
@@ -148,7 +149,7 @@ body {
 }
 
 .brand-title {
-    font-size: 1.25rem;
+    font-size: 1.3rem;
     font-weight: 800;
     color: #0F1F38;
     line-height: 1.1;
@@ -160,7 +161,7 @@ body {
 }
 
 .brand-subtitle {
-    font-size: 0.68rem;
+    font-size: 0.72rem;
     font-weight: 500;
     color: #64748B;
     line-height: 1.25;
@@ -169,63 +170,70 @@ body {
 
 .welcome-heading-group {
     max-width: 62%;
-    margin-top: 4px;
 }
 
 .welcome-title {
-    font-size: clamp(1.65rem, 5.2vw, 2.15rem);
+    font-size: clamp(1.75rem, 5.5vw, 2.25rem);
     font-weight: 800;
     color: #0F1F38;
-    line-height: 1.15;
+    line-height: 1.18;
     letter-spacing: -0.6px;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
 
 .welcome-subtitle {
-    font-size: clamp(0.78rem, 2.6vw, 0.88rem);
+    font-size: clamp(0.82rem, 2.7vw, 0.92rem);
     color: #475569;
-    line-height: 1.4;
+    line-height: 1.45;
     margin-bottom: 0;
     font-weight: 450;
 }
 
 /* ========================================================
-   Bottom White Card Section (Form, Social, Footer)
+   Bottom White Card Section (Balanced Flow ~62-65% Height)
    ======================================================== */
 .login-card {
     position: relative;
     z-index: 3;
     background: #FFFFFF;
-    border-radius: 32px 32px 0 0;
+    border-radius: 36px 36px 0 0;
     box-shadow: 0 -12px 36px rgba(15, 31, 56, 0.08);
-    padding: clamp(16px, 2.5vh, 26px) 24px calc(env(safe-area-inset-bottom, 0px) + 18px) 24px;
+    padding: clamp(20px, 3vh, 30px) 24px calc(env(safe-area-inset-bottom, 0px) + 20px) 24px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     flex: 1 1 auto;
-    margin-top: 6px;
 }
 
 @media (min-width: 521px) {
     .login-card {
-        border-radius: 30px;
+        border-radius: 32px;
         margin: 0 16px 16px 16px;
         box-shadow: 0 10px 30px rgba(15, 31, 56, 0.06);
-        padding: 22px 24px 20px 24px;
+        padding: 26px 24px 22px 24px;
     }
+}
+
+/* Form Container */
+#loginForm {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(12px, 1.8vh, 16px);
 }
 
 /* Form Fields */
 .form-field-group {
-    margin-bottom: clamp(8px, 1.6vh, 14px);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 .field-label {
     display: block;
-    font-size: 0.82rem;
+    font-size: 0.86rem;
     font-weight: 600;
     color: #1E293B;
-    margin-bottom: 5px;
+    margin-bottom: 0;
     letter-spacing: -0.1px;
 }
 
@@ -233,11 +241,11 @@ body {
     position: relative;
     display: flex;
     align-items: center;
-    height: clamp(44px, 5.2vh, 48px);
+    height: clamp(48px, 5.8vh, 54px);
     background: #FFFFFF;
     border: 1.5px solid #E2E8F0;
     border-radius: 14px;
-    padding: 0 14px;
+    padding: 0 16px;
     transition: all 0.2s ease;
 }
 
@@ -248,7 +256,7 @@ body {
 
 .input-icon {
     color: #94A3B8;
-    font-size: 0.98rem;
+    font-size: 1rem;
     margin-right: 12px;
     display: inline-flex;
     align-items: center;
@@ -263,7 +271,7 @@ body {
     height: 100%;
     outline: none;
     color: #0F1F38;
-    font-size: 0.94rem;
+    font-size: 0.95rem;
     font-weight: 500;
     font-family: inherit;
     padding: 0;
@@ -296,8 +304,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: clamp(10px, 1.8vh, 16px);
-    font-size: 0.84rem;
+    font-size: 0.85rem;
+    margin-top: 2px;
 }
 
 .remember-label {
@@ -338,22 +346,23 @@ body {
     justify-content: center;
     gap: 10px;
     width: 100%;
-    height: clamp(46px, 5.5vh, 52px);
+    height: clamp(50px, 6vh, 56px);
     background: linear-gradient(135deg, #10B981 0%, #059669 100%);
     color: #FFFFFF !important;
     font-size: 1.05rem;
     font-weight: 700;
     border: none;
     border-radius: 9999px;
-    box-shadow: 0 10px 22px rgba(5, 150, 105, 0.32);
+    box-shadow: 0 10px 24px rgba(5, 150, 105, 0.3);
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     user-select: none;
+    margin-top: 4px;
 }
 
 .btn-signin-primary:hover {
     background: linear-gradient(135deg, #059669 0%, #047857 100%);
-    box-shadow: 0 12px 26px rgba(5, 150, 105, 0.42);
+    box-shadow: 0 12px 28px rgba(5, 150, 105, 0.4);
     transform: translateY(-1.5px);
 }
 
@@ -375,7 +384,7 @@ body {
     display: flex;
     align-items: center;
     gap: 14px;
-    margin: clamp(8px, 1.5vh, 14px) 0;
+    margin: clamp(10px, 1.8vh, 18px) 0;
 }
 
 .or-line {
@@ -396,14 +405,14 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
-    margin-bottom: clamp(10px, 1.8vh, 16px);
+    margin-bottom: clamp(10px, 1.8vh, 18px);
 }
 
 .social-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: clamp(42px, 5vh, 48px);
+    height: clamp(44px, 5.4vh, 50px);
     background: #F8FAFC;
     border: 1.5px solid #E2E8F0;
     border-radius: 14px;
@@ -428,9 +437,9 @@ body {
     align-items: center;
     justify-content: center;
     gap: 6px;
-    font-size: 0.88rem;
+    font-size: 0.9rem;
     color: #64748B;
-    margin-top: 2px;
+    margin-top: 4px;
 }
 
 .create-account-link {
@@ -451,16 +460,21 @@ body {
 @media (max-height: 680px) {
     .login-top-section {
         padding-top: calc(env(safe-area-inset-top, 0px) + 12px);
-        padding-bottom: 4px;
+        padding-bottom: 6px;
+    }
+
+    .brand-row {
+        margin-bottom: 8px;
     }
 
     .login-hero-bg {
-        width: 190px;
-        height: 240px;
+        width: 180px;
+        height: 220px;
     }
 
     .welcome-title {
-        font-size: 1.5rem;
+        font-size: 1.45rem;
+        margin-bottom: 4px;
     }
 
     .welcome-subtitle {
@@ -468,19 +482,15 @@ body {
     }
 
     .login-card {
-        padding: 14px 20px 14px 20px;
+        padding: 16px 20px 14px 20px;
     }
 
-    .form-field-group {
-        margin-bottom: 6px;
+    #loginForm {
+        gap: 8px;
     }
 
     .input-container {
         height: 42px;
-    }
-
-    .options-row {
-        margin-bottom: 8px;
     }
 
     .btn-signin-primary {
@@ -491,8 +501,12 @@ body {
         margin: 6px 0;
     }
 
+    .social-buttons-row {
+        margin-bottom: 6px;
+    }
+
     .social-btn {
-        height: 40px;
+        height: 38px;
     }
 }
 </style>
