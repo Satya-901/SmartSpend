@@ -1,7 +1,7 @@
 <?php
 /**
  * SmartSpend - Login Screen
- * Redesigned Modern 100VH Zero-Scroll Layout matching Reference Design
+ * Seamlessly Blended 100VH Zero-Scroll Layout matching Reference Design
  */
 
 require_once __DIR__ . '/config/app.php';
@@ -37,7 +37,7 @@ body {
     touch-action: manipulation;
 }
 
-/* Page Outer Wrapper */
+/* Page Outer Canvas */
 .login-page-wrapper {
     position: relative;
     width: 100%;
@@ -48,23 +48,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: radial-gradient(circle at 92% 10%, #CDEFE0 0%, #E3F6EE 28%, #F2FAF6 62%, #FAF5EE 100%);
+    background-color: #FAF5EE;
 }
 
-/* Ambient Mint Organic Curves */
-.ambient-bg-glow {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-    background: radial-gradient(circle at 10% 95%, rgba(167, 243, 208, 0.35) 0%, transparent 45%),
-                radial-gradient(circle at 85% 15%, rgba(52, 211, 153, 0.22) 0%, transparent 55%);
-}
-
-/* Main Mobile App Frame */
+/* Main Container Frame */
 .login-container {
     position: relative;
-    z-index: 2;
     width: 100%;
     max-width: 480px;
     height: 100%;
@@ -75,6 +64,7 @@ body {
     justify-content: space-between;
     overflow: hidden;
     box-sizing: border-box;
+    background: linear-gradient(135deg, #FFFFFF 0%, #F5FBF8 40%, #E2F6ED 78%, #CDF0DF 100%);
 }
 
 /* Desktop Polished Shell */
@@ -90,28 +80,50 @@ body {
         height: 94vh;
         max-height: 860px;
         border-radius: 36px;
-        background: radial-gradient(circle at 92% 10%, #CDEFE0 0%, #E3F6EE 28%, #F2FAF6 62%, #FAF5EE 100%);
-        box-shadow: 0 25px 65px rgba(15, 31, 56, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+        box-shadow: 0 25px 65px rgba(15, 31, 56, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
     }
 }
 
 /* ========================================================
-   Top Section: Brand, Welcome & 3D Isometric Visual
+   Seamless Background Layer (Integrated Phone & Mint Waves)
+   ======================================================== */
+.login-hero-bg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: clamp(210px, 58%, 290px);
+    height: clamp(260px, 38vh, 375px);
+    background-image: url('assets/img/login-bg-phone.png');
+    background-repeat: no-repeat;
+    background-position: top right;
+    background-size: contain;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Ambient bottom-left wave accent */
+.login-bottom-ambient-curve {
+    position: absolute;
+    bottom: -30px;
+    left: -30px;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(167, 243, 208, 0.45) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ========================================================
+   Top Content Section (Brand, Welcome Headings)
    ======================================================== */
 .login-top-section {
     position: relative;
     z-index: 2;
-    padding: calc(env(safe-area-inset-top, 0px) + 20px) 24px 10px 24px;
+    padding: calc(env(safe-area-inset-top, 0px) + 22px) 24px 10px 24px;
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
+    flex-direction: column;
     flex-shrink: 0;
-}
-
-.brand-text-col {
-    position: relative;
-    z-index: 3;
-    max-width: 64%;
 }
 
 .brand-row {
@@ -156,6 +168,7 @@ body {
 }
 
 .welcome-heading-group {
+    max-width: 62%;
     margin-top: 4px;
 }
 
@@ -168,20 +181,6 @@ body {
     margin-bottom: 6px;
 }
 
-.wave-emoji {
-    display: inline-block;
-    animation: waveHand 2.2s infinite;
-    transform-origin: 70% 70%;
-}
-
-@keyframes waveHand {
-    0%, 60%, 100% { transform: rotate(0deg); }
-    10%, 30% { transform: rotate(14deg); }
-    20% { transform: rotate(-8deg); }
-    40% { transform: rotate(10deg); }
-    50% { transform: rotate(-4deg); }
-}
-
 .welcome-subtitle {
     font-size: clamp(0.78rem, 2.6vw, 0.88rem);
     color: #475569;
@@ -190,37 +189,12 @@ body {
     font-weight: 450;
 }
 
-/* 3D Isometric Smartphone Visual */
-.hero-3d-visual {
-    position: absolute;
-    right: -10px;
-    top: 6px;
-    width: clamp(140px, 38vw, 195px);
-    pointer-events: none;
-    z-index: 2;
-    animation: floatPhone 5s ease-in-out infinite;
-}
-
-.img-3d-phone {
-    width: 100%;
-    height: auto;
-    display: block;
-    filter: drop-shadow(0 14px 28px rgba(5, 150, 105, 0.16));
-    mask-image: radial-gradient(circle at 60% 50%, black 72%, transparent 100%);
-    -webkit-mask-image: radial-gradient(circle at 60% 50%, black 72%, transparent 100%);
-}
-
-@keyframes floatPhone {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-6px) rotate(1deg); }
-}
-
 /* ========================================================
    Bottom White Card Section (Form, Social, Footer)
    ======================================================== */
 .login-card {
     position: relative;
-    z-index: 4;
+    z-index: 3;
     background: #FFFFFF;
     border-radius: 32px 32px 0 0;
     box-shadow: 0 -12px 36px rgba(15, 31, 56, 0.08);
@@ -480,9 +454,9 @@ body {
         padding-bottom: 4px;
     }
 
-    .hero-3d-visual {
-        width: 120px;
-        top: 2px;
+    .login-hero-bg {
+        width: 190px;
+        height: 240px;
     }
 
     .welcome-title {
@@ -524,32 +498,26 @@ body {
 </style>
 
 <div class="login-page-wrapper">
-    <!-- Ambient Mint Glow -->
-    <div class="ambient-bg-glow"></div>
-
     <div class="login-container">
-        <!-- TOP SECTION: Brand, Welcome & 3D Illustration -->
-        <div class="login-top-section">
-            <div class="brand-text-col">
-                <!-- Brand Row -->
-                <div class="brand-row">
-                    <img src="assets/img/logo-symbol.png" class="brand-logo-img" alt="SmartSpend Logo">
-                    <div class="brand-name-group">
-                        <span class="brand-title">Smart<span class="brand-title-accent">Spend</span></span>
-                        <span class="brand-subtitle">Personal Expense & Loan Management</span>
-                    </div>
-                </div>
+        <!-- Integrated Background Layer (3D Phone & Mint Waves) -->
+        <div class="login-hero-bg"></div>
+        <div class="login-bottom-ambient-curve"></div>
 
-                <!-- Welcome Text -->
-                <div class="welcome-heading-group">
-                    <h1 class="welcome-title">Welcome<br>Back! <span class="wave-emoji">👋</span></h1>
-                    <p class="welcome-subtitle">Sign in to continue managing your finances smarter.</p>
+        <!-- TOP SECTION: Brand & Welcome Headings -->
+        <div class="login-top-section">
+            <!-- Brand Row -->
+            <div class="brand-row">
+                <img src="assets/img/logo-symbol.png" class="brand-logo-img" alt="SmartSpend Logo">
+                <div class="brand-name-group">
+                    <span class="brand-title">Smart<span class="brand-title-accent">Spend</span></span>
+                    <span class="brand-subtitle">Personal Expense & Loan Management</span>
                 </div>
             </div>
 
-            <!-- 3D Smartphone Hero Visual -->
-            <div class="hero-3d-visual">
-                <img src="assets/img/login-hero-3d.png" alt="SmartSpend Financial Dashboard" class="img-3d-phone">
+            <!-- Welcome Text -->
+            <div class="welcome-heading-group">
+                <h1 class="welcome-title">Welcome<br>Back! 👋</h1>
+                <p class="welcome-subtitle">Sign in to continue managing your finances smarter.</p>
             </div>
         </div>
 
